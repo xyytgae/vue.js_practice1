@@ -41,8 +41,10 @@
 </template>
 
 <script>
+import options from './lib/definitions.js';
 export default {
 components: {
+    options
 },
 data () {
   return {
@@ -51,7 +53,7 @@ data () {
     comment: '',
     state: '',
     todos: [],
-    options: ['作業中','完了'],
+    // options: ['作業中','完了'],
     picked:'',
   }
 },
@@ -87,5 +89,6 @@ computed: {
     }
   }
 },
-}
+};
 </script>
+
