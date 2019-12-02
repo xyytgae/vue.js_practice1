@@ -27,7 +27,7 @@
             <td>{{ item.id }}</td>
             <td>{{ item.comment }}</td>
             <td>
-              <button type="button" v-on:click="stateButton(item)">{{ options[item.state] }}</button>
+              <button type="button" v-on:click="stateButton(item)">{{ optionsChange }}</button>
               <button type="button" v-on:click="doRemove(index)">削除</button>
             </td>
           </tr>
@@ -41,11 +41,11 @@
 </template>
 
 <script>
-import options from './lib/definitions.js';
+  import { options } from './lib/definitions.js';
 export default {
-components: {
-    options
-},
+// components: {
+//
+// },
 data () {
   return {
     idNumber: 0,
@@ -53,7 +53,6 @@ data () {
     comment: '',
     state: '',
     todos: [],
-    // options: ['作業中','完了'],
     picked:'',
   }
 },
@@ -87,8 +86,10 @@ computed: {
     } else {
       return this.todos;
     }
-  }
+  },
+  optionsChange: function(item){
+    return options[item.state];
+  },
 },
 };
 </script>
-
