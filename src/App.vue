@@ -27,7 +27,7 @@
             <td>{{ item.id }}</td>
             <td>{{ item.comment }}</td>
             <td>
-              <button type="button" v-on:click="stateButton(item)">{{ optionsChange }}</button>
+              <button type="button" v-on:click="stateButton(item)">{{ optionsChange(item) }}</button>
               <button type="button" v-on:click="doRemove(index)">削除</button>
             </td>
           </tr>
@@ -76,6 +76,9 @@ methods: {
    doRemove(index) {
      this.todos.splice(index, 1);
    },
+   optionsChange(item) {
+     return options[item.state];
+   },
 },
 computed: {
   diplayTodos: function() {
@@ -86,9 +89,6 @@ computed: {
     } else {
       return this.todos;
     }
-  },
-  optionsChange: function(item){
-    return options[item.state];
   },
 },
 };
