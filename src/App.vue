@@ -23,11 +23,11 @@
       </tr>
     </thead>
     <tbody>
-        <tr v-for="(item, index) in diplayTodos" v-bind:key="item.id">
+        <tr v-for="(item, index) in displayTodos" v-bind:key="item.id">
             <td>{{ item.id }}</td>
             <td>{{ item.comment }}</td>
             <td>
-              <button type="button" v-on:click="stateButton(item)">{{ optionsChange(item) }}</button>
+              <button type="button" v-on:click="statusButton(item)">{{ optionsChange(item) }}</button>
               <button type="button" v-on:click="doRemove(index)">削除</button>
             </td>
           </tr>
@@ -41,18 +41,11 @@
 </template>
 
 <script>
-  import { options } from './lib/definitions.js';
+import { options } from './lib/definitions.js';
 export default {
-// components: {
-//
-// },
 data () {
   return {
-    idNumber: 0,
     newTask: '',
-    comment: '',
-    state: '',
-    todos: [],
     picked:'',
   }
 },
@@ -61,33 +54,28 @@ methods: {
     if (this.newTask.length <= 0) {
       return this.newTask;
     }else {
-      this.todos.push({
-        id: this.idNumber,
-        comment: this.newTask,
-        state: 0,
-    })
-    this.idNumber++;
-    this.newTask = '';
+      this.$store.commit('addButton',this.newTask);
+      this.newTask = '';
     }
   },
-  stateButton(item) {
-    item.state = item.state ? 0 : 1;
+  statusButton(item) {
+    item.status = item.status ? 0 : 1;
    },
    doRemove(index) {
-     this.todos.splice(index, 1);
+     this.$store.state.todos.splice(index, 1);
    },
    optionsChange(item) {
-     return options[item.state];
+     return options[item.status];
    },
 },
 computed: {
-  diplayTodos: function() {
+  displayTodos: function() {
     if (this.picked === 'working') {
-      return this.todos.filter(filteredTodos => filteredTodos.state === 0);
+      return this.$store.state.todos.filter(filteredTodos => filteredTodos.status === 0);
     } else if (this.picked === 'done') {
-      return this.todos.filter(filteredTodos => filteredTodos.state === 1);
+      return this.$store.state.todos.filter(filteredTodos => filteredTodos.status === 1);
     } else {
-      return this.todos;
+      return this.$store.state.todos;
     }
   },
 },
