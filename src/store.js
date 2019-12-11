@@ -5,23 +5,24 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    message: '初期メッセージ'
+    todos:[],
+    idNumber: 0,
   },
   getters: {
-    message(state) {
-      return state.message
-    }
+
   },
   mutations: {
-    setMessage(state,payload){
-      state.message = payload.message
-    }
+    addButton(state, newTaskText) {
+      state.todos.push({
+        id: state.idNumber,
+        comment: newTaskText,
+        status: 0,
+      })
+      state.idNumber++;
+    },
   },
-
   actions: {
-    doUpdate({commit}, message){
-      commit('setMessage',{message})
-    }
+
   }
 })
 export default store
