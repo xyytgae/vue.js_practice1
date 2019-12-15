@@ -7,9 +7,18 @@ const store = new Vuex.Store({
   state: {
     todos:[],
     idNumber: 0,
+    picked: '',
   },
   getters: {
-
+    filter(state) {
+      if (state.picked === 'working') {
+        return state.todos.filter(filteredTodos => filteredTodos.status === 0);
+      } else if (state.picked === 'done') {
+        return state.todos.filter(filteredTodos => filteredTodos.status === 1);
+      } else {
+        return state.todos;
+      }
+    },
   },
   mutations: {
     addButton(state, newTaskText) {
@@ -19,6 +28,19 @@ const store = new Vuex.Store({
         status: 0,
       })
       state.idNumber++;
+    },
+
+
+    statusButton(state) {
+      state.todos[].status = state.todos[].status ? 0 : 1;
+    },
+
+
+    doRemove(state, indexNumber) {
+      state.todos.splice(indexNumber, 1)
+    },
+    updatePicked(state, pickedValue) {
+      state.picked = pickedValue
     },
   },
   actions: {
