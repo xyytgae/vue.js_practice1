@@ -27,7 +27,7 @@
             <td>{{ item.id }}</td>
             <td>{{ item.comment }}</td>
             <td>
-              <button type="button" v-on:click="statusButton(item)">{{ optionsChange(item) }}</button>
+              <button type="button" v-on:click="statusButton()">{{ optionsChange(item) }}</button>
               <button type="button" v-on:click="doRemove(index)">削除</button>
             </td>
           </tr>
@@ -46,7 +46,6 @@ export default {
 data () {
   return {
     newTask: '',
-    picked:'',
   }
 },
 methods: {
@@ -58,11 +57,18 @@ methods: {
       this.newTask = '';
     }
   },
-  statusButton(item) {
-    item.status = item.status ? 0 : 1;
+
+
+  // statusButton(item) {
+  //   item.status = item.status ? 0 : 1;
+  //  },
+   statusButton() {
+     this.$store.commit('statusButton');
    },
+
+
    doRemove(index) {
-     this.$store.state.todos.splice(index, 1);
+     this.$store.commit('doRemove', index);
    },
    optionsChange(item) {
      return options[item.status];
@@ -70,14 +76,16 @@ methods: {
 },
 computed: {
   displayTodos: function() {
-    if (this.picked === 'working') {
-      return this.$store.state.todos.filter(filteredTodos => filteredTodos.status === 0);
-    } else if (this.picked === 'done') {
-      return this.$store.state.todos.filter(filteredTodos => filteredTodos.status === 1);
-    } else {
-      return this.$store.state.todos;
-    }
+    return this.$store.getters.filter
   },
+  picked: {
+    get () {
+      return this.$store.state.picked
+    },
+    set (value) {
+      this.$store.commit('updatePicked', value)
+    },
+  }
 },
 };
 </script>
