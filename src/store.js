@@ -7,7 +7,7 @@ const store = new Vuex.Store({
   state: {
     todos:[],
     idNumber: 0,
-    picked: '',
+    picked: 'all',
   },
   getters: {
     filter(state) {
@@ -31,8 +31,8 @@ const store = new Vuex.Store({
     },
 
 
-    statusButton(state) {
-      state.todos[].status = state.todos[].status ? 0 : 1;
+    statusButton(state, indexNumber) {
+      state.todos[indexNumber].status = state.todos[indexNumber].status ? 0 : 1;
     },
 
 
