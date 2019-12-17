@@ -27,7 +27,7 @@
             <td>{{ item.id }}</td>
             <td>{{ item.comment }}</td>
             <td>
-              <button type="button" v-on:click="statusButton()">{{ optionsChange(item) }}</button>
+              <button type="button" v-on:click="statusButton(index)">{{ optionsChange(index) }}</button>
               <button type="button" v-on:click="doRemove(index)">削除</button>
             </td>
           </tr>
@@ -57,21 +57,17 @@ methods: {
       this.newTask = '';
     }
   },
-
-
   // statusButton(item) {
   //   item.status = item.status ? 0 : 1;
   //  },
-   statusButton() {
-     this.$store.commit('statusButton');
+   statusButton(index) {
+     this.$store.commit('statusButton', index);
    },
-
-
    doRemove(index) {
      this.$store.commit('doRemove', index);
    },
-   optionsChange(item) {
-     return options[item.status];
+   optionsChange(index) {
+     return options[this.$store.state.todos[index].status];
    },
 },
 computed: {
