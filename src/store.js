@@ -29,13 +29,9 @@ const store = new Vuex.Store({
       })
       state.idNumber++;
     },
-
-
     statusButton(state, indexNumber) {
       state.todos[indexNumber].status = state.todos[indexNumber].status ? 0 : 1;
     },
-
-
     doRemove(state, indexNumber) {
       state.todos.splice(indexNumber, 1)
     },
