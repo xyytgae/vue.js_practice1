@@ -1,46 +1,84 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+<template>
+<div>
+  <h1>ToDoリスト</h1>
+  <form>
+    <label>
+      <input type="radio" name="button" value="all" v-model="picked" checked/>全て
+    </label>
+    <label>
+      <input type="radio" name="button" value="working" v-model="picked">作業中
+    </label>
+    <label>
+      <input type="radio" name="button" value="done" v-model="picked">完了
+    </label>
+    <br>
+  </form>
 
-Vue.use(Vuex)
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>コメント</th>
+        <th>状態</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr v-for="(item, index) in displayTodos" v-bind:key="item.id">
+            <td>{{ item.id + 1 }}</td>
+            <td>{{ item.comment }}</td>
+            <td>
+              <button type="button" v-on:click="statusButton(index)">{{ optionsChange(item) }}</button>
+              <button type="button" v-on:click="doRemove(index)">削除</button>
+            </td>
+          </tr>
+    </tbody>
+  </table>
 
-const store = new Vuex.Store({
-  state: {
-    todos:[],
-    idNumber: 0,
-    picked: 'all',
-  },
-  getters: {
-    filter(state) {
-      if (state.picked === 'working') {
-        return state.todos.filter(filteredTodos => filteredTodos.status === 0);
-      } else if (state.picked === 'done') {
-        return state.todos.filter(filteredTodos => filteredTodos.status === 1);
-      } else {
-        return state.todos;
-      }
-    },
-  },
-  mutations: {
-    addButton(state, newTaskText) {
-      state.todos.push({
-        id: state.idNumber,
-        comment: newTaskText,
-        status: 0,
-      })
-      state.idNumber++;
-    },
-    statusButton(state, indexNumber) {
-      state.todos[indexNumber].status = state.todos[indexNumber].status ? 0 : 1;
-    },
-    doRemove(state, indexNumber) {
-      state.todos.splice(indexNumber, 1)
-    },
-    updatePicked(state, pickedValue) {
-      state.picked = pickedValue
-    },
-  },
-  actions: {
+  <h2>新規タスクの追加</h2>
+  <input type="text" v-model.lazy="newTask">
+  <button type="button" v-on:click="addButton">追加</button>
+</div>
+</template>
 
+<script>
+import { options } from './lib/definitions.js';
+export default {
+data () {
+  return {
+    newTask: '',
   }
-})
-export default store
+},
+methods: {
+  addButton() {
+    if (this.newTask.length <= 0) {
+      return this.newTask;
+    }else {
+      this.$store.commit('addButton',this.newTask);
+      this.newTask = '';
+    }
+  },
+   statusButton(index) {
+     this.$store.commit('statusButton', index);
+   },
+   doRemove(index) {
+     this.$store.commit('doRemove', index);
+   },
+   optionsChange(item) {
+     return options[this.$store.state.todos[item.id].status];
+   },
+},
+computed: {
+  displayTodos: function() {
+    return this.$store.getters.filter
+  },
+  picked: {
+    get () {
+      return this.$store.state.picked
+    },
+    set (value) {
+      this.$store.commit('updatePicked', value)
+    },
+  }
+},
+};
+</script>
