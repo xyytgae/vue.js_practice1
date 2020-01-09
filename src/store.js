@@ -5,23 +5,42 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    message: '初期メッセージ'
+    todos:[],
+    idNumber: 0,
+    picked: 'all',
   },
   getters: {
-    message(state) {
-      return state.message
-    }
+    filter(state) {
+      if (state.picked === 'working') {
+        return state.todos.filter(filteredTodos => filteredTodos.status === 0);
+      } else if (state.picked === 'done') {
+        return state.todos.filter(filteredTodos => filteredTodos.status === 1);
+      } else {
+        return state.todos;
+      }
+    },
   },
   mutations: {
-    setMessage(state,payload){
-      state.message = payload.message
-    }
+    addButton(state, newTaskText) {
+      state.todos.push({
+        id: state.idNumber,
+        comment: newTaskText,
+        status: 0,
+      })
+      state.idNumber++;
+    },
+    statusButton(state, indexNumber) {
+      state.todos[indexNumber].status = state.todos[indexNumber].status ? 0 : 1;
+    },
+    doRemove(state, indexNumber) {
+      state.todos.splice(indexNumber, 1)
+    },
+    updatePicked(state, pickedValue) {
+      state.picked = pickedValue
+    },
   },
-
   actions: {
-    doUpdate({commit}, message){
-      commit('setMessage',{message})
-    }
+
   }
 })
 export default store
