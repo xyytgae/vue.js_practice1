@@ -27,8 +27,8 @@
             <td>{{ item.id + 1 }}</td>
             <td>{{ item.comment }}</td>
             <td>
-              <button type="button" v-on:click="statusButton(index)">{{ optionsChange(item) }}</button>
-              <button type="button" v-on:click="doRemove(index)">削除</button>
+              <button type="button" v-on:click="statusButton(index)">{{ optionsChange(item.id) }}</button>
+              <button type="button" v-on:click="doRemove(item.id)">削除</button>
             </td>
           </tr>
     </tbody>
@@ -63,8 +63,8 @@ methods: {
    doRemove(index) {
      this.$store.commit('doRemove', index);
    },
-   optionsChange(item) {
-     return options[this.$store.state.todos[item.id].status];
+   optionsChange(index) {
+     return options[this.$store.state.todos[index].status];
    },
 },
 computed: {
